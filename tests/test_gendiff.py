@@ -3,6 +3,7 @@
 import json
 import os
 import tempfile
+
 from gendiff.diff import generate_diff
 from gendiff.parser import parse_json
 
