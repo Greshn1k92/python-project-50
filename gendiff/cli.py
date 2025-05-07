@@ -1,8 +1,9 @@
 """CLI interface for gendiff."""
 
 import argparse
-from gendiff.parser import parse_json
+
 from gendiff.diff import generate_diff
+from gendiff.parser import parse_json
 
 
 def parse_args():
