@@ -4,7 +4,7 @@ install:
 	pip install -e .
 
 lint:
-	ruff check .
+	python -m ruff check .
 
 test:
 	pytest
