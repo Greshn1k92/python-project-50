@@ -7,9 +7,9 @@ lint:
 	python -m ruff check .
 
 test:
-	pytest
+	python -m pytest
 
 test-coverage:
-	pytest --cov=gendiff --cov-report xml --junitxml=test-results.xml
+	python -m pytest --cov=gendiff --cov-report xml --junitxml=test-results.xml
 
 check: lint test 
