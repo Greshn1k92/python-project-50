@@ -1,6 +1,7 @@
 """CLI interface for gendiff."""
 
 import argparse
+from gendiff.parser import parse_json
 
 
 def parse_args():
@@ -21,8 +22,10 @@ def parse_args():
 def main():
     """Run the main CLI logic."""
     args = parse_args()
-    print(f"Comparing {args.first_file} and {args.second_file}")
-    print(f"Format: {args.format}")
+    data1 = parse_json(args.first_file)
+    data2 = parse_json(args.second_file)
+    print("Data from first file:", data1)
+    print("Data from second file:", data2)
 
 
 if __name__ == "__main__":
