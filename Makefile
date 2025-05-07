@@ -10,6 +10,6 @@ test:
 	pytest
 
 test-coverage:
-	pytest --cov=gendiff --cov-report xml
+	pytest --cov=gendiff --cov-report xml --junitxml=test-results.xml
 
 check: lint test 
