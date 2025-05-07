@@ -1,5 +1,3 @@
-"""CLI interface for gendiff."""
-
 import argparse
 
 from gendiff.diff import generate_diff
@@ -7,7 +5,6 @@ from gendiff.parser import parse_json
 
 
 def parse_args():
-    """Parse command line arguments."""
     parser = argparse.ArgumentParser(
         description="Compares two configuration files and shows a difference.",
     )
@@ -22,7 +19,6 @@ def parse_args():
 
 
 def main():
-    """Run the main CLI logic."""
     args = parse_args()
     data1 = parse_json(args.first_file)
     data2 = parse_json(args.second_file)
