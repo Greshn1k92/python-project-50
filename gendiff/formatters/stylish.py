@@ -5,44 +5,40 @@ def format_value(value, depth):
         return str(value).lower()
     if isinstance(value, (int, float)):
         return str(value)
-    if isinstance(value, str):
-        return value
     if isinstance(value, dict):
-        indent = '    ' * (depth + 1)
-        lines = [
-            f"{indent}{k}: {format_value(v, depth + 1)}"
-            for k, v in value.items()
-        ]
-        closing = '    ' * depth
-        return f"{{\n{chr(10).join(lines)}\n{closing}}}"
+        if not value:
+            return '{}'
+        indent = ' ' * (depth * 4 + 6)
+        closing_indent = ' ' * (depth * 4 + 4)
+        lines = [f"{indent}{k}: {format_value(v, depth + 1)}" for k, v in value.items()]
+        return '{\n' + '\n'.join(lines) + f'\n{closing_indent}' + '}'
     return str(value)
 
 
-def format_node(node, depth=1):
-    indent = '    ' * (depth - 1)
-    if node.type == 'nested':
-        children = ''.join([
-            format_node(child, depth + 1) for child in node.children
-        ])
-        return f"{indent}{node.key}: {{\n{children}{indent}}}\n"
-    elif node.type == 'added':
-        return f"{indent}+ {node.key}: {format_value(node.value, depth)}\n"
-    elif node.type == 'removed':
-        return f"{indent}- {node.key}: {format_value(node.value, depth)}\n"
-    elif node.type == 'unchanged':
-        return f"{indent}{node.key}: {format_value(node.value, depth)}\n"
-    elif node.type == 'changed':
-        return (
-            f"{indent}- {node.key}: {format_value(node.old_value, depth)}\n"
-            f"{indent}+ {node.key}: {format_value(node.new_value, depth)}\n"
-        )
+def format_node(node, depth):
+    key = node.key
+    type_ = node.type
+    value = node.value
+    key_indent = ' ' * (depth * 4 + 4)
+    sign_indent = ' ' * (depth * 4 + 2)
+
+    if type_ == 'nested':
+        children = [format_node(child, depth + 1) for child in node.children]
+        return f"{key_indent}{key}: {{\n" + '\n'.join(children) + f"\n{key_indent}}}"
+    elif type_ == 'added':
+        return f"{sign_indent}+ {key}: {format_value(value, depth)}"
+    elif type_ == 'removed':
+        return f"{sign_indent}- {key}: {format_value(value, depth)}"
+    elif type_ == 'unchanged':
+        return f"{key_indent}{key}: {format_value(value, depth)}"
+    elif type_ == 'changed':
+        old_value, new_value = node.old_value, node.new_value
+        return (f"{sign_indent}- {key}: {format_value(old_value, depth)}\n"
+                f"{sign_indent}+ {key}: {format_value(new_value, depth)}")
 
 
 def format_diff(diff):
     if not diff:
         return '{}'
-    result = '{\n'
-    for node in diff:
-        result += format_node(node, 1)
-    result += '}'
-    return result 
+    lines = [format_node(node, 0) for node in diff]
+    return '{\n' + '\n'.join(lines) + '\n}'
