@@ -169,4 +169,106 @@ def test_generate_diff_with_mixed_files():
         assert generate_diff(data1, data2) == expected
     finally:
         os.unlink(json_file)
-        os.unlink(yaml_file) 
+        os.unlink(yaml_file)
+
+
+def test_generate_diff_with_nested_json_files():
+    file1_data = parse_json('tests/test_data/file1_nested.json')
+    file2_data = parse_json('tests/test_data/file2_nested.json')
+    expected = '''{
+    common: {
+      + follow: false
+        setting1: Value 1
+      - setting2: 200
+      - setting3: true
+      + setting3: null
+      + setting4: blah blah
+      + setting5: {
+            key5: value5
+        }
+        setting6: {
+            key: value
+          + ops: vops
+            doge: {
+              - wow: 
+              + wow: so much
+            }
+        }
+    }
+    group1: {
+      - baz: bas
+      + baz: bars
+        foo: bar
+      - nest: {
+            key: value
+        }
+      + nest: str
+    }
+  - group2: {
+        abc: 12345
+        deep: {
+            id: 45
+        }
+    }
+  + group3: {
+        deep: {
+            id: {
+                number: 45
+            }
+        }
+        fee: 100500
+    }
+}'''
+    result = generate_diff(file1_data, file2_data)
+    assert result == expected
+
+
+def test_generate_diff_with_nested_yaml_files():
+    file1_data = parse_yaml('tests/test_data/file1_nested.yml')
+    file2_data = parse_yaml('tests/test_data/file2_nested.yml')
+    expected = '''{
+    common: {
+      + follow: false
+        setting1: Value 1
+      - setting2: 200
+      - setting3: true
+      + setting3: null
+      + setting4: blah blah
+      + setting5: {
+            key5: value5
+        }
+        setting6: {
+            key: value
+          + ops: vops
+            doge: {
+              - wow: 
+              + wow: so much
+            }
+        }
+    }
+    group1: {
+      - baz: bas
+      + baz: bars
+        foo: bar
+      - nest: {
+            key: value
+        }
+      + nest: str
+    }
+  - group2: {
+        abc: 12345
+        deep: {
+            id: 45
+        }
+    }
+  + group3: {
+        deep: {
+            id: {
+                number: 45
+            }
+        }
+        fee: 100500
+    }
+}'''
+    result = generate_diff(file1_data, file2_data)
+    assert result == expected 
