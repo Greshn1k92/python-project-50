@@ -10,7 +10,10 @@ def format_value(value, depth):
             return '{}'
         indent = ' ' * (depth * 4 + 6)
         closing_indent = ' ' * (depth * 4 + 4)
-        lines = [f"{indent}{k}: {format_value(v, depth + 1)}" for k, v in value.items()]
+        lines = [
+            f"{indent}{k}: {format_value(v, depth + 1)}"
+            for k, v in value.items()
+        ]
         return '{\n' + '\n'.join(lines) + f'\n{closing_indent}' + '}'
     return str(value)
 
@@ -24,7 +27,11 @@ def format_node(node, depth):
 
     if type_ == 'nested':
         children = [format_node(child, depth + 1) for child in node.children]
-        return f"{key_indent}{key}: {{\n" + '\n'.join(children) + f"\n{key_indent}}}"
+        return (
+            f"{key_indent}{key}: {{\n"
+            + '\n'.join(children)
+            + f"\n{key_indent}}}"
+        )
     elif type_ == 'added':
         return f"{sign_indent}+ {key}: {format_value(value, depth)}"
     elif type_ == 'removed':
