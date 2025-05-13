@@ -1,7 +1,15 @@
 import argparse
+import os
 
 from gendiff.diff import generate_diff
-from gendiff.parser import parse_json
+from gendiff.parser import parse_json, parse_yaml
+
+
+def get_file_parser(file_path):
+    _, ext = os.path.splitext(file_path)
+    if ext.lower() in ['.yaml', '.yml']:
+        return parse_yaml
+    return parse_json
 
 
 def parse_args():
@@ -20,8 +28,10 @@ def parse_args():
 
 def main():
     args = parse_args()
-    data1 = parse_json(args.first_file)
-    data2 = parse_json(args.second_file)
+    parse_first = get_file_parser(args.first_file)
+    parse_second = get_file_parser(args.second_file)
+    data1 = parse_first(args.first_file)
+    data2 = parse_second(args.second_file)
     print(generate_diff(data1, data2))
 
 
