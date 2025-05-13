@@ -12,15 +12,21 @@ def format_node(node, path=''):
     current_path = f"{path}.{node.key}" if path else node.key
     
     if node.type == 'nested':
-        return ''.join([format_node(child, current_path) for child in node.children])
+        return ''.join([
+            format_node(child, current_path) for child in node.children
+        ])
     elif node.type == 'added':
-        return f"Property '{current_path}' was added with value: {format_value(node.value)}\n"
+        return (
+            f"Property '{current_path}' was added with value: "
+            f"{format_value(node.value)}\n"
+        )
     elif node.type == 'removed':
         return f"Property '{current_path}' was removed\n"
     elif node.type == 'changed':
         return (
             f"Property '{current_path}' was updated. "
-            f"From {format_value(node.old_value)} to {format_value(node.new_value)}\n"
+            f"From {format_value(node.old_value)} to "
+            f"{format_value(node.new_value)}\n"
         )
     return ''
 
