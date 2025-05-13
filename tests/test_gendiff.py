@@ -1,6 +1,7 @@
 import json
 import os
 import tempfile
+
 import yaml
 
 from gendiff.diff import generate_diff
