@@ -4,9 +4,8 @@ from typing import Any, Dict, List, Optional
 
 @dataclass
 class DiffNode:
-    """Узел дерева различий."""
     key: str
-    type: str  # 'added', 'removed', 'unchanged', 'changed', 'nested'
+    type: str
     value: Any
     old_value: Optional[Any] = None
     new_value: Optional[Any] = None
@@ -14,16 +13,6 @@ class DiffNode:
 
 
 def build_diff(data1: Dict, data2: Dict) -> List[DiffNode]:
-    """
-    Строит дерево различий между двумя словарями.
-    
-    Args:
-        data1: Первый словарь
-        data2: Второй словарь
-        
-    Returns:
-        Список узлов дерева различий
-    """
     result = []
     all_keys = sorted(set(data1.keys()) | set(data2.keys()))
     
