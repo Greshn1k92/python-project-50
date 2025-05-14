@@ -10,9 +10,6 @@ dependencies = [
 ]
 requires-python = ">=3.12"
 
-[project.scripts]
-gendiff = "gendiff.cli:main"
-
 [build-system]
 requires = ["hatchling"]
 build-backend = "hatchling.build"
@@ -38,3 +35,6 @@ ignore = []
 quote-style = "double"
 indent-style = "space"
 line-ending = "auto"
+
+[project.scripts]
+gendiff = "gendiff.cli:main"
