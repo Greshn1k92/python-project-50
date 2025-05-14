@@ -49,6 +49,6 @@ def make_stylish_diff(diff, spaces_count=2):
     return f"{{\n{formatted_string}\n{end_indent}}}"
 
 
-def format_diff(data):
+def format_diff_stylish(data):
     return make_stylish_diff(data)
 
