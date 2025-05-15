@@ -1,4 +1,4 @@
-from typing import Any, Dict, List
+from typing import Dict, List
 
 
 def build_diff(data1: Dict, data2: Dict) -> List[Dict]:

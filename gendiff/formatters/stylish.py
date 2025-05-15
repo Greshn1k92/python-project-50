@@ -1,9 +1,12 @@
+from typing import Any, Dict, List
+
 SEPARATOR = " "
 ADD = '+ '
 DEL = '- '
 NONE = '  '
 
-def format_value(value, spaces_count=2):
+
+def format_value(value: Any, spaces_count: int = 2) -> str:
     if value is None:
         return "null"
     if isinstance(value, bool):
@@ -19,7 +22,8 @@ def format_value(value, spaces_count=2):
         return f"{{\n{formatted_string}\n{end_indent}}}"
     return str(value)
 
-def make_stylish_diff(diff, spaces_count=2):
+
+def make_stylish_diff(diff: List[Dict], spaces_count: int = 2) -> str:
     indent = SEPARATOR * spaces_count
     lines = []
     for item in diff:
@@ -46,6 +50,7 @@ def make_stylish_diff(diff, spaces_count=2):
 
     return f"{{\n{formatted_string}\n{end_indent}}}"
 
-def format_diff(diff):
+
+def format_diff(diff: List[Dict]) -> str:
     return make_stylish_diff(diff)
 
