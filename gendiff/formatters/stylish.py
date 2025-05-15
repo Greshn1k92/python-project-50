@@ -51,4 +51,3 @@ def make_stylish_diff(diff, spaces_count=2):
 
 def format_diff_stylish(data):
     return make_stylish_diff(data)
-
