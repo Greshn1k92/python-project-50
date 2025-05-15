@@ -3,7 +3,6 @@ ADD = '+ '
 DEL = '- '
 NONE = '  '
 
-
 def format_value(value, spaces_count=2):
     if value is None:
         return "null"
@@ -18,8 +17,7 @@ def format_value(value, spaces_count=2):
         formatted_string = '\n'.join(result_lines)
         end_indent = SEPARATOR * (spaces_count + 2)
         return f"{{\n{formatted_string}\n{end_indent}}}"
-    return f"{value}"
-
+    return str(value)
 
 def make_stylish_diff(diff, spaces_count=2):
     indent = SEPARATOR * spaces_count
@@ -48,7 +46,6 @@ def make_stylish_diff(diff, spaces_count=2):
 
     return f"{{\n{formatted_string}\n{end_indent}}}"
 
-
-def format_diff_stylish(data):
-    return make_stylish_diff(data)
+def format_diff(diff):
+    return make_stylish_diff(diff)
 
