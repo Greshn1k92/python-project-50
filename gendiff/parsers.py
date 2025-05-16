@@ -1,6 +1,7 @@
 import json
+from typing import Any, Dict
+
 import yaml
-from typing import Dict, Any
 
 
 def parse_file(file_path: str) -> Dict[str, Any]:
