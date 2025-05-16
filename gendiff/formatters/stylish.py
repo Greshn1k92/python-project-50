@@ -16,6 +16,8 @@ def format_value(value, spaces_count=4):
         return "null"
     elif isinstance(value, bool):
         return str(value).lower()
+    elif value == "":
+        return ""
     return str(value)
 
 
@@ -33,13 +35,13 @@ def make_stylish_diff(diff, spaces_count=4):
         elif action == 'added':
             value = format_value(item['value'], spaces_count)
             lines.append(f"{' ' * indent}+ {key}: {value}")
-        elif action == 'removed':
+        elif action == 'deleted':
             value = format_value(item['value'], spaces_count)
             lines.append(f"{' ' * indent}- {key}: {value}")
         elif action == 'unchanged':
             value = format_value(item['value'], spaces_count)
             lines.append(f"{' ' * indent}  {key}: {value}")
-        elif action == 'changed':
+        elif action == 'modified':
             old_value = format_value(item['old_value'], spaces_count)
             new_value = format_value(item['new_value'], spaces_count)
             lines.append(f"{' ' * indent}- {key}: {old_value}")
