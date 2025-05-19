@@ -1,22 +1,22 @@
-SEPARATOR = " "
+SEPARATOR = "    "  # 4 пробела
 ADD = '+ '
 DEL = '- '
 NONE = '  '
 
 
-def format_value(value, spaces_count=2):
+def format_value(value, spaces_count=4):
     if value is None:
         return "null"
     if isinstance(value, bool):
         return str(value).lower()
     if isinstance(value, dict):
-        indent = SEPARATOR * (spaces_count + 4)
+        indent = SEPARATOR * (spaces_count // 4 + 1)
         result_lines = []
         for key, inner_value in value.items():
             formatted_value = format_value(inner_value, spaces_count + 4)
             result_lines.append(f"{indent}{NONE}{key}: {formatted_value}")
         formatted_string = '\n'.join(result_lines)
-        end_indent = SEPARATOR * (spaces_count + 2)
+        end_indent = SEPARATOR * (spaces_count // 4)
         return f"{{\n{formatted_string}\n{end_indent}}}"
     if isinstance(value, str):
         return value
@@ -56,8 +56,8 @@ def format(diff):
     return '{\n' + format_diff(diff) + '\n}'
 
 
-def make_stylish_diff(diff, spaces_count=2):
-    indent = SEPARATOR * spaces_count
+def make_stylish_diff(diff, spaces_count=4):
+    indent = SEPARATOR * (spaces_count // 4)
     lines = []
     for item in diff:
         key = item['name']
