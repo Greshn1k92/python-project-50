@@ -18,7 +18,9 @@ def format_value(value, spaces_count=2):
         formatted_string = '\n'.join(result_lines)
         end_indent = SEPARATOR * (spaces_count + 2)
         return f"{{\n{formatted_string}\n{end_indent}}}"
-    return f"{value}"
+    if isinstance(value, str):
+        return value
+    return str(value)
 
 
 def format_diff(diff, depth=0):
@@ -60,34 +62,30 @@ def make_stylish_diff(diff, spaces_count=2):
     for item in diff:
         key = item['name']
         action = item['action']
-        value = format_value(item.get('value'), spaces_count)
-        old_value = format_value(item.get('old_value'), spaces_count)
-        new_value = format_value(item.get('new_value'), spaces_count)
-
+        
         if action == "unchanged":
+            value = format_value(item['value'], spaces_count)
             lines.append(f"{indent}{NONE}{key}: {value}")
         elif action == "modified":
-            lines.append(
-                f"{indent}{DEL}{key}: {old_value}"
-            )
-            lines.append(
-                f"{indent}{ADD}{key}: {new_value}"
-            )
+            old_value = format_value(item['old_value'], spaces_count)
+            new_value = format_value(item['new_value'], spaces_count)
+            lines.append(f"{indent}{DEL}{key}: {old_value}")
+            lines.append(f"{indent}{ADD}{key}: {new_value}")
         elif action == "deleted":
+            old_value = format_value(item['value'], spaces_count)
             lines.append(f"{indent}{DEL}{key}: {old_value}")
         elif action == "added":
+            new_value = format_value(item['value'], spaces_count)
             lines.append(f"{indent}{ADD}{key}: {new_value}")
         elif action == 'nested':
-            children = make_stylish_diff(
-                item.get("children"),
-                spaces_count + 4
-            )
-            lines.append(f"{indent}{NONE}{key}: {children}")
+            lines.append(f"{indent}{NONE}{key}: {{")
+            children = make_stylish_diff(item['children'], spaces_count + 4)
+            lines.append(children)
+            lines.append(f"{indent}{NONE}}}")
+    
     formatted_string = '\n'.join(lines)
-    end_indent = SEPARATOR * (spaces_count - 2)
-
-    return f"{{\n{formatted_string}\n{end_indent}}}"
+    return formatted_string
 
 
 def format_diff_stylish(data):
-    return make_stylish_diff(data)
+    return '{\n' + make_stylish_diff(data) + '\n}'
