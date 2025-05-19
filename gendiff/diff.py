@@ -11,6 +11,8 @@ def generate_diff(
     data1 = parse_file(file_path1)
     data2 = parse_file(file_path2)
     diff = build_diff(data1, data2)
+    
     if format_name not in FORMATTERS:
         raise ValueError(f"Unknown format: {format_name}")
+    
     return FORMATTERS[format_name](diff)
