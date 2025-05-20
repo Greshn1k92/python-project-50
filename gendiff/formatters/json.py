@@ -1,8 +1,10 @@
 import json
 
+
 def _transform_to_list(diff_node):
     """Recursively transforms the diff dictionary node into a list format
-    matching the expected JSON structure (using 'name' and correct 'action' values)."""
+    matching the expected JSON structure (using 'name' and correct 'action'
+    values)."""
     output_list = []
     for key in sorted(diff_node.keys()):
         item = diff_node[key]
@@ -14,7 +16,7 @@ def _transform_to_list(diff_node):
         elif status == 'changed':
             action = 'modified'
         else:
-            action = status # For 'added', 'unchanged', 'nested'
+            action = status  # For 'added', 'unchanged', 'nested'
 
         entry = {
             'action': action,
@@ -23,12 +25,13 @@ def _transform_to_list(diff_node):
 
         if status == 'added':
             entry['new_value'] = item['value']
-        elif status == 'removed': # internal status is 'removed'
+        elif status == 'removed':  # internal status is 'removed'
             entry['old_value'] = item['value']
         elif status == 'unchanged':
             entry['value'] = item['value']
-        elif status == 'changed': # internal status is 'changed'
-            # Match order from expected_result_json_format.txt: new_value then old_value
+        elif status == 'changed':  # internal status is 'changed'
+            # Match order from expected_result_json_format.txt: new_value then
+            # old_value
             entry['new_value'] = item['new_value']
             entry['old_value'] = item['old_value']
         elif status == 'nested':
@@ -37,8 +40,10 @@ def _transform_to_list(diff_node):
         output_list.append(entry)
     return output_list
 
+
 def format_diff_json(diff_dict):
-    """Formats the diff dictionary into a JSON string representing a list of changes."""
+    """Formats the diff dictionary into a JSON string representing a list of
+    changes."""
     if not isinstance(diff_dict, dict):
         return json.dumps([])
         

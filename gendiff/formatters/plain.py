@@ -14,7 +14,9 @@ def build_plain_lines(diff_dict, current_path_prefix=''):
     lines = []
     for key in sorted(diff_dict.keys()):
         item_data = diff_dict[key]
-        full_path = f"{current_path_prefix}.{key}" if current_path_prefix else key
+        full_path = (
+            f"{current_path_prefix}.{key}" if current_path_prefix else key
+        )
 
         status = item_data.get('status')
 
@@ -23,7 +25,8 @@ def build_plain_lines(diff_dict, current_path_prefix=''):
         elif status == 'added':
             formatted_value = format_value(item_data['value'])
             lines.append(
-                f"Property '{full_path}' was added with value: {formatted_value}"
+                f"Property '{full_path}' was added with value: "
+                f"{formatted_value}"
             )
         elif status == 'removed':
             lines.append(f"Property '{full_path}' was removed")
@@ -31,8 +34,8 @@ def build_plain_lines(diff_dict, current_path_prefix=''):
             formatted_old_value = format_value(item_data['old_value'])
             formatted_new_value = format_value(item_data['new_value'])
             lines.append(
-                f"Property '{full_path}' was updated. From {formatted_old_value} "
-                f"to {formatted_new_value}"
+                f"Property '{full_path}' was updated. From "
+                f"{formatted_old_value} to {formatted_new_value}"
             )
     return lines
 
