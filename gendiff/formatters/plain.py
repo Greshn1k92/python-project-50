@@ -5,34 +5,41 @@ def format_value(value):
         return f"'{value}'"
     if value is None:
         return 'null'
-    return str(value).lower() if isinstance(value, bool) else str(value)
+    if isinstance(value, bool):
+        return str(value).lower()
+    return str(value)
 
 
-def format_node(node, path=''):
-    current_path = f"{path}.{node.key}" if path else node.key
-    
-    if node.type == 'nested':
-        return ''.join([
-            format_node(child, current_path) for child in node.children
-        ])
-    elif node.type == 'added':
-        return (
-            f"Property '{current_path}' was added with value: "
-            f"{format_value(node.value)}\n"
-        )
-    elif node.type == 'removed':
-        return f"Property '{current_path}' was removed\n"
-    elif node.type == 'changed':
-        return (
-            f"Property '{current_path}' was updated. "
-            f"From {format_value(node.old_value)} to "
-            f"{format_value(node.new_value)}\n"
-        )
-    return ''
+def build_plain_lines(diff_dict, current_path_prefix=''):
+    lines = []
+    for key in sorted(diff_dict.keys()):
+        item_data = diff_dict[key]
+        full_path = f"{current_path_prefix}.{key}" if current_path_prefix else key
+
+        status = item_data.get('status')
+
+        if status == 'nested':
+            lines.extend(build_plain_lines(item_data['children'], full_path))
+        elif status == 'added':
+            formatted_value = format_value(item_data['value'])
+            lines.append(
+                f"Property '{full_path}' was added with value: {formatted_value}"
+            )
+        elif status == 'removed':
+            lines.append(f"Property '{full_path}' was removed")
+        elif status == 'changed':
+            formatted_old_value = format_value(item_data['old_value'])
+            formatted_new_value = format_value(item_data['new_value'])
+            lines.append(
+                f"Property '{full_path}' was updated. From {formatted_old_value} "
+                f"to {formatted_new_value}"
+            )
+    return lines
 
 
-def format_diff(diff):
-    if not diff:
-        return ''
-    result = ''.join([format_node(node) for node in diff])
-    return result.rstrip() 
+def format_diff(diff_data):
+    if not isinstance(diff_data, dict):
+        return ""
+        
+    lines = build_plain_lines(diff_data)
+    return '\n'.join(lines) 
