@@ -1,7 +1,7 @@
 import pytest
 
 from gendiff.diff import generate_diff
-from gendiff.parsers import parse_file
+
 
 # This is the local read_file function for tests
 def read_file(path):
