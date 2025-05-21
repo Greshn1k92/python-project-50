@@ -3,7 +3,6 @@ import pytest
 from gendiff.diff import generate_diff
 
 
-# This is the local read_file function for tests
 def read_file(path):
     with open(path) as f:
         return f.read()
