@@ -9,6 +9,10 @@
 ## Description
 Generate diff between two configuration files.
 
+[![asciicast](https://asciinema.org/a/S0l8nqXjB6Lttjosv1ZWaUfVE.svg)](https://asciinema.org/a/S0l8nqXjB6Lttjosv1ZWaUfVE)
+[![asciicast](https://asciinema.org/a/ACrGk9Vm5Hjnfb4x2Emr1pXcb.svg)](https://asciinema.org/a/ACrGk9Vm5Hjnfb4x2Emr1pXcb)
+[![asciicast](https://asciinema.org/a/1CxCPJdhKmnG5uyXqTxPbSaWB.svg)](https://asciinema.org/a/1CxCPJdhKmnG5uyXqTxPbSaWB)
+
 ## Installation
 ```bash
 pip install hexlet-code
